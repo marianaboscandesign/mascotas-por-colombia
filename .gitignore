@@ -37,3 +37,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# arreglos SQL puntuales (uso local)
+supabase/_fix_*.sql
