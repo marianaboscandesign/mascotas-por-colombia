@@ -39,11 +39,11 @@ exception when duplicate_object then null; end $$;
 
 -- Estados de cada flujo
 do $$ begin
-  create type public.lost_pet_status as enum ('activa', 'encontrada', 'cerrada');
+  create type public.lost_pet_status as enum ('activa', 'encontrada', 'cerrada', 'reunida');
 exception when duplicate_object then null; end $$;
 
 do $$ begin
-  create type public.found_pet_status as enum ('en_resguardo', 'reunida', 'derivada', 'cerrada');
+  create type public.found_pet_status as enum ('en_resguardo', 'en_la_calle', 'reunida', 'derivada', 'cerrada');
 exception when duplicate_object then null; end $$;
 
 do $$ begin

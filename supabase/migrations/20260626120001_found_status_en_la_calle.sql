@@ -7,4 +7,4 @@
 -- transacción de `supabase db push`.
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.found_pet_status add value if not exists 'en_la_calle';
+-- [ya incluido en el CREATE TYPE] alter type public.found_pet_status add value if not exists 'en_la_calle';

@@ -7,4 +7,4 @@
 -- ════════════════════════════════════════════════════════════════
 
 -- Nuevo estado terminal "reunida" para mascotas perdidas (found_pets ya lo tiene)
-alter type public.lost_pet_status add value if not exists 'reunida';
+-- [ya incluido en el CREATE TYPE] alter type public.lost_pet_status add value if not exists 'reunida';

@@ -45,11 +45,11 @@ exception when duplicate_object then null; end $$;
 
 -- Estados de cada flujo
 do $$ begin
-  create type public.lost_pet_status as enum ('activa', 'encontrada', 'cerrada');
+  create type public.lost_pet_status as enum ('activa', 'encontrada', 'cerrada', 'reunida');
 exception when duplicate_object then null; end $$;
 
 do $$ begin
-  create type public.found_pet_status as enum ('en_resguardo', 'reunida', 'derivada', 'cerrada');
+  create type public.found_pet_status as enum ('en_resguardo', 'en_la_calle', 'reunida', 'derivada', 'cerrada');
 exception when duplicate_object then null; end $$;
 
 do $$ begin
@@ -959,7 +959,9 @@ grant select on public.searchable_pets to anon, authenticated;
 do $$ begin
   create type public.shelter_need as enum (
     'alimento', 'agua', 'medicinas', 'mantas',
-    'casas_temporales', 'transporte', 'veterinarios', 'donaciones'
+    'casas_temporales', 'transporte', 'veterinarios', 'donaciones',
+    'guantes', 'gasas', 'vendas', 'arena_gatos', 'productos_limpieza',
+    'camas', 'accesorios', 'perrarina', 'gatarina', 'correas', 'kennels'
   );
 exception when duplicate_object then null; end $$;
 
@@ -1100,7 +1102,7 @@ create index if not exists news_featured_idx
 -- ════════════════════════════════════════════════════════════════
 
 -- Nuevo estado terminal "reunida" para mascotas perdidas (found_pets ya lo tiene)
-alter type public.lost_pet_status add value if not exists 'reunida';
+-- [ya incluido en el CREATE TYPE] alter type public.lost_pet_status add value if not exists 'reunida';
 
 
 -- ═══════════════════════════════════════════════════════════════
@@ -1182,10 +1184,10 @@ grant execute on function public.mark_pet_reunited(text, uuid, text) to anon, au
 -- ('agua' ya existía.)
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.shelter_need add value if not exists 'perrarina';
-alter type public.shelter_need add value if not exists 'gatarina';
-alter type public.shelter_need add value if not exists 'correas';
-alter type public.shelter_need add value if not exists 'kennels';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'perrarina';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'gatarina';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'correas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'kennels';
 
 
 -- ═══════════════════════════════════════════════════════════════
@@ -1198,9 +1200,9 @@ alter type public.shelter_need add value if not exists 'kennels';
 -- la transacción de `supabase db push`.
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.shelter_need add value if not exists 'guantes';
-alter type public.shelter_need add value if not exists 'gasas';
-alter type public.shelter_need add value if not exists 'vendas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'guantes';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'gasas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'vendas';
 
 
 -- ═══════════════════════════════════════════════════════════════
@@ -1315,10 +1317,10 @@ grant select on public.public_volunteers to anon, authenticated;
 -- la transacción de `supabase db push`.
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.shelter_need add value if not exists 'arena_gatos';
-alter type public.shelter_need add value if not exists 'productos_limpieza';
-alter type public.shelter_need add value if not exists 'camas';
-alter type public.shelter_need add value if not exists 'accesorios';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'arena_gatos';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'productos_limpieza';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'camas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'accesorios';
 
 
 -- ═══════════════════════════════════════════════════════════════
@@ -1519,7 +1521,7 @@ grant select on public.searchable_pets to anon, authenticated;
 -- transacción de `supabase db push`.
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.found_pet_status add value if not exists 'en_la_calle';
+-- [ya incluido en el CREATE TYPE] alter type public.found_pet_status add value if not exists 'en_la_calle';
 
 
 -- ═══════════════════════════════════════════════════════════════

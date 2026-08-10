@@ -6,7 +6,9 @@
 do $$ begin
   create type public.shelter_need as enum (
     'alimento', 'agua', 'medicinas', 'mantas',
-    'casas_temporales', 'transporte', 'veterinarios', 'donaciones'
+    'casas_temporales', 'transporte', 'veterinarios', 'donaciones',
+    'guantes', 'gasas', 'vendas', 'arena_gatos', 'productos_limpieza',
+    'camas', 'accesorios', 'perrarina', 'gatarina', 'correas', 'kennels'
   );
 exception when duplicate_object then null; end $$;
 

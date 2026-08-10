@@ -5,6 +5,6 @@
 -- la transacción de `supabase db push`.
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.shelter_need add value if not exists 'guantes';
-alter type public.shelter_need add value if not exists 'gasas';
-alter type public.shelter_need add value if not exists 'vendas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'guantes';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'gasas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'vendas';

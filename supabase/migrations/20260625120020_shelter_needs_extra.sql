@@ -6,7 +6,7 @@
 -- ('agua' ya existía.)
 -- ════════════════════════════════════════════════════════════════
 
-alter type public.shelter_need add value if not exists 'perrarina';
-alter type public.shelter_need add value if not exists 'gatarina';
-alter type public.shelter_need add value if not exists 'correas';
-alter type public.shelter_need add value if not exists 'kennels';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'perrarina';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'gatarina';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'correas';
+-- [ya incluido en el CREATE TYPE] alter type public.shelter_need add value if not exists 'kennels';
