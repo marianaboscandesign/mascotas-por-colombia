@@ -1,0 +1,251 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* ─────────────────────────────────────────────────────────────
+   Mascotas por Venezuela — Sistema de diseño
+   Paleta suave, moderna y accesible (WCAG AA).
+   - Primario: teal sereno  → esperanza, calma, renovación
+   - Cálido:   coral/terra  → amor, cercanía, solidaridad
+   - Neutros:  grises cálidos → claridad y limpieza
+   Estilo de referencia: Airbnb / Stripe (minimalista y elegante).
+   ───────────────────────────────────────────────────────────── */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.75rem;
+
+  /* Base */
+  --background: hsl(48 33% 99%);
+  --foreground: hsl(200 18% 16%);
+
+  --card: hsl(0 0% 100%);
+  --card-foreground: hsl(200 18% 16%);
+
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(200 18% 16%);
+
+  /* Primario — teal sereno #46756c (AA con texto blanco) */
+  --primary: #46756c;
+  --primary-foreground: hsl(0 0% 100%);
+
+  /* Secundario — tinte teal muy suave */
+  --secondary: hsl(168 26% 94%);
+  --secondary-foreground: hsl(168 30% 24%);
+
+  /* Cálido — coral solidario (uso decorativo / acentos) */
+  --warm: hsl(14 80% 46%);
+  --warm-foreground: hsl(0 0% 100%);
+  --warm-soft: hsl(22 90% 96%);
+  --warm-soft-foreground: hsl(15 65% 34%);
+
+  /* Apoyo */
+  --muted: hsl(40 16% 95%);
+  --muted-foreground: hsl(205 12% 40%);
+
+  --accent: hsl(168 26% 94%);
+  --accent-foreground: hsl(168 30% 24%);
+
+  /* Estados */
+  --destructive: hsl(0 72% 45%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --success: hsl(152 56% 32%);
+  --success-foreground: hsl(0 0% 100%);
+  --warning: hsl(38 84% 42%);
+  --warning-foreground: hsl(0 0% 100%);
+
+  /* Bordes y formularios */
+  --border: hsl(40 13% 89%);
+  --input: hsl(40 13% 89%);
+  --ring: hsl(168 25% 42%);
+
+  /* Gráficas / categorías */
+  --chart-1: hsl(168 25% 42%);
+  --chart-2: hsl(14 80% 56%);
+  --chart-3: hsl(38 84% 52%);
+  --chart-4: hsl(204 60% 45%);
+  --chart-5: hsl(280 40% 55%);
+}
+
+.dark {
+  --background: hsl(200 22% 9%);
+  --foreground: hsl(40 20% 96%);
+
+  --card: hsl(200 20% 12%);
+  --card-foreground: hsl(40 20% 96%);
+
+  --popover: hsl(200 20% 12%);
+  --popover-foreground: hsl(40 20% 96%);
+
+  --primary: hsl(168 42% 70%);
+  --primary-foreground: hsl(200 30% 8%);
+
+  --secondary: hsl(195 20% 18%);
+  --secondary-foreground: hsl(40 20% 96%);
+
+  --warm: hsl(14 82% 62%);
+  --warm-foreground: hsl(200 30% 8%);
+  --warm-soft: hsl(15 35% 18%);
+  --warm-soft-foreground: hsl(22 90% 88%);
+
+  --muted: hsl(200 16% 17%);
+  --muted-foreground: hsl(205 12% 65%);
+
+  --accent: hsl(195 20% 18%);
+  --accent-foreground: hsl(40 20% 96%);
+
+  --destructive: hsl(0 65% 58%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --success: hsl(152 50% 50%);
+  --success-foreground: hsl(200 30% 8%);
+  --warning: hsl(38 80% 58%);
+  --warning-foreground: hsl(200 30% 8%);
+
+  --border: hsl(200 14% 22%);
+  --input: hsl(200 14% 24%);
+  --ring: hsl(168 42% 70%);
+
+  --chart-1: hsl(168 42% 70%);
+  --chart-2: hsl(14 82% 62%);
+  --chart-3: hsl(38 80% 60%);
+  --chart-4: hsl(204 60% 60%);
+  --chart-5: hsl(280 45% 68%);
+}
+
+/* Mapa de tokens → utilidades de Tailwind (bg-primary, text-muted-foreground…) */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-warm: var(--warm);
+  --color-warm-foreground: var(--warm-foreground);
+  --color-warm-soft: var(--warm-soft);
+  --color-warm-soft-foreground: var(--warm-soft-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading:
+    var(--font-jakarta), var(--font-inter), ui-sans-serif, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading tracking-tight text-balance;
+  }
+
+  /* Foco visible y accesible en todos los elementos interactivos */
+  :focus-visible {
+    @apply ring-ring ring-offset-background ring-2 ring-offset-2 outline-none;
+  }
+
+  /* Respeta la preferencia de movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Salto al contenido para lectores de pantalla / teclado */
+  .sr-only-focusable {
+    @apply sr-only;
+  }
+  .sr-only-focusable:focus,
+  .sr-only-focusable:focus-within {
+    @apply bg-primary text-primary-foreground not-sr-only fixed top-4 left-4 z-[100] rounded-md px-4 py-2;
+  }
+}
+
+/* ── Animaciones sutiles de la página 404 ──────────────────────────
+   (el bloque global de prefers-reduced-motion de arriba las desactiva) */
+@keyframes nf-tail-wag {
+  0%,
+  100% {
+    transform: rotate(-11deg);
+  }
+  50% {
+    transform: rotate(9deg);
+  }
+}
+@keyframes nf-paw-step {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+.nf-tail {
+  transform-box: fill-box;
+  transform-origin: 88% 92%;
+  animation: nf-tail-wag 1.3s ease-in-out infinite;
+}
+.nf-paw {
+  animation: nf-paw-step 2.2s ease-in-out infinite;
+}

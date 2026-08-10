@@ -1,0 +1,2 @@
+-- Seed vacío: Mascotas por Colombia arranca sin datos de ejemplo.
+-- La plataforma se llena con los reportes reales de la comunidad.
