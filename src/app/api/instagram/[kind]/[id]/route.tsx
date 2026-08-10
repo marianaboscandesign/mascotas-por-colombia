@@ -123,6 +123,10 @@ export async function GET(
 
   const isLost = kind === "perdida";
   const reunited = pet.status === "reunida";
+  // El rótulo/estilo sigue el ESTADO actual, no solo la tabla: una mascota
+  // perdida cuyo estado ya es "encontrada" (apareció) o "reunida" NO se muestra
+  // como PERDIDO/A. Solo es "perdida" a la vista mientras siga sin aparecer.
+  const stillLost = isLost && !reunited && pet.status !== "encontrada";
   const photo = (await photoDataUrl(pet.photos[0])) ?? logoDataUrl();
   const hasName = Boolean(pet.name?.trim());
   const name = pet.name?.trim() || SPECIES[pet.species] || "Mascota";
@@ -138,17 +142,17 @@ export async function GET(
 
   const badgeText = reunited
     ? "REUNIDO/A"
-    : isLost
+    : stillLost
       ? "PERDIDO/A"
       : "ENCONTRADO/A";
-  const nameColor = isLost ? ORANGE : TEAL;
-  const filename = `${slugify(name) || "mascota"}-${reunited ? "reunido" : isLost ? "perdido" : "encontrado"}.png`;
+  const nameColor = stillLost ? ORANGE : TEAL;
+  const filename = `${slugify(name) || "mascota"}-${reunited ? "reunido" : stillLost ? "perdido" : "encontrado"}.png`;
 
   const Badge = (
     <div
       style={{
         display: "flex",
-        background: reunited ? "#ffffff" : isLost ? ORANGE : TEAL,
+        background: reunited ? "#ffffff" : stillLost ? ORANGE : TEAL,
         color: reunited ? TEAL : "#ffffff",
         fontSize: 78,
         fontWeight: 800,
@@ -186,7 +190,7 @@ export async function GET(
       <div
         style={{
           display: "flex",
-          background: reunited ? "#ffffff" : isLost ? TEAL : ORANGE,
+          background: reunited ? "#ffffff" : stillLost ? TEAL : ORANGE,
           color: reunited ? ORANGE : "#ffffff",
           fontSize: 46,
           fontWeight: 800,

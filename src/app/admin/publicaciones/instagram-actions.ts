@@ -26,6 +26,9 @@ function buildCaption(
 ): string {
   const isLost = kind === "perdida";
   const reunited = pet.status === "reunida";
+  // El texto sigue el ESTADO actual, no solo la tabla: una perdida cuyo estado
+  // ya es "encontrada" (apareció) no se anuncia como "SE BUSCA".
+  const stillLost = isLost && !reunited && pet.status !== "encontrada";
   const name = pet.name?.trim() || SPECIES[pet.species] || "mascota";
   const place = [pet.sector, pet.city, pet.state].filter(Boolean).join(", ");
   const phone = isLost
@@ -37,7 +40,7 @@ function buildCaption(
 
   const cityTag = pet.city ? ` #${slugify(pet.city).replace(/-/g, "")}` : "";
   const tags = `#MascotasPorColombia #Colombia${cityTag} ${
-    isLost ? "#MascotaPerdida #SeBusca" : "#MascotaEncontrada"
+    stillLost ? "#MascotaPerdida #SeBusca" : "#MascotaEncontrada"
   } #Mascotas #Rescate`;
 
   if (reunited) {
@@ -56,10 +59,10 @@ function buildCaption(
       .join("\n");
   }
 
-  const header = isLost
+  const header = stillLost
     ? `🔴 SE BUSCA: ${name}${pet.city ? ` en ${pet.city}` : ""} 🐾`
     : `🟢 MASCOTA ENCONTRADA${pet.city ? ` en ${pet.city}` : ""} 🐾`;
-  const cta = isLost
+  const cta = stillLost
     ? "Si la has visto, ¡ayúdala a volver a casa!"
     : "¿La reconoces o sabes de su familia?";
 
