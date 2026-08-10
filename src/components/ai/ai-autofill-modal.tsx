@@ -279,7 +279,7 @@ export function AiAutofillModal({
               {error === "RATE_LIMIT" ? (
                 <div className="flex flex-col gap-1 text-destructive/90">
                   <strong className="text-destructive font-semibold">Servicio muy solicitado</strong>
-                  <p>Por los momentos hemos agotado el uso gratuito de la Inteligencia Artificial. Por favor, intenta de nuevo en unos minutos o procede a rellenar el formulario de forma manual.</p>
+                  <p>El servicio está temporalmente ocupado. Por favor, intenta de nuevo en unos minutos o completa el formulario de forma manual.</p>
                 </div>
               ) : (
                 <span className="mt-0.5">{error}</span>

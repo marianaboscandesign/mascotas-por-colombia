@@ -16,10 +16,10 @@ export function AiAutofillCard({ onClick, entityName = "mascota" }: AiAutofillCa
         <div className="space-y-1.5 max-w-xl">
           <h3 className="font-heading text-base font-semibold text-amber-900 dark:text-amber-200 flex items-center gap-2">
             <Sparkles className="size-4 text-amber-500 animate-pulse" />
-            ¿Tienes un texto o publicación de redes sociales?
+            ¿Tienes fotos o una publicación de X?
           </h3>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            Pega el enlace o texto de Instagram, X (Twitter), Facebook o WhatsApp. Nuestra IA extraerá las fotos, teléfono y datos de la {entityName} para completar el formulario automáticamente en segundos.
+            Sube fotos de la {entityName} reportada o pega un enlace de X (Twitter). Nuestra IA completará el formulario automáticamente con la información que pueda identificar.
           </p>
         </div>
         <div className="shrink-0 md:self-center">

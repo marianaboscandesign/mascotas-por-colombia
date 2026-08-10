@@ -1,16 +1,30 @@
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 
+function isRateLimitError(error: unknown) {
+  if (typeof error === "object" && error !== null) {
+    const { status, code } = error as { status?: number; code?: number };
+    if (status === 429 || code === 429) return true;
+  }
+
+  const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
+  return message.includes("429") || /quota|rate limit|exhausted/.test(message);
+}
+
 export async function POST(req: Request) {
   try {
-    if (!process.env.GEMINI_API_KEY) {
+    const apiKeys = [
+      process.env.GEMINI_API_KEY,
+      process.env.GEMINI_API_KEY_FALLBACK_1,
+      process.env.GEMINI_API_KEY_FALLBACK_2,
+    ].filter((apiKey): apiKey is string => Boolean(apiKey));
+
+    if (apiKeys.length === 0) {
       return NextResponse.json(
         { error: "API Key de Gemini no configurada." },
         { status: 500 },
       );
     }
-
-    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
     const { entityType, text, image } = await req.json();
 
@@ -123,16 +137,29 @@ export async function POST(req: Request) {
       }
     }
 
-    const response = await ai.models.generateContent({
-      model: "gemini-flash-latest",
-      contents: [{ role: "user", parts }],
-      config: {
-        responseMimeType: "application/json",
-        temperature: 0.2,
-      },
-    });
+    let responseText: string | undefined;
+    let lastRateLimitError: unknown;
 
-    const responseText = response.text;
+    for (const apiKey of apiKeys) {
+      try {
+        const ai = new GoogleGenAI({ apiKey });
+        const response = await ai.models.generateContent({
+          model: "gemini-flash-latest",
+          contents: [{ role: "user", parts }],
+          config: {
+            responseMimeType: "application/json",
+            temperature: 0.2,
+          },
+        });
+        responseText = response.text;
+        if (responseText) break;
+        throw new Error("No se obtuvo respuesta de Gemini.");
+      } catch (error) {
+        if (!isRateLimitError(error)) throw error;
+        lastRateLimitError = error;
+      }
+    }
+
     if (!responseText) {
       throw new Error("No se obtuvo respuesta de Gemini.");
     }
@@ -145,7 +172,7 @@ export async function POST(req: Request) {
     console.error("[AI Extract Error]", err);
     
     // Si el error es por límite de cuota o tasa de peticiones (429 Too Many Requests)
-    if (err.message.includes("429") || err.message.toLowerCase().includes("quota") || err.message.toLowerCase().includes("rate limit") || err.message.toLowerCase().includes("exhausted")) {
+    if (isRateLimitError(err)) {
       return NextResponse.json(
         { error: "RATE_LIMIT" },
         { status: 429 },
