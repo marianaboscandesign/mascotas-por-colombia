@@ -37,18 +37,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
-  // Páginas long-tail por estado: "Mascotas perdidas/encontradas en {estado}".
+  // Páginas long-tail por departamento: "Mascotas perdidas/encontradas en {estado}".
   const stateEntries: MetadataRoute.Sitemap = COLOMBIA_DEPARTMENTS.flatMap((s) => {
     const slug = stateToSlug(s);
     return [
       {
-        url: url(`/mascotas/estado/${slug}`),
+        url: url(`/mascotas/departamento/${slug}`),
         lastModified: now,
         changeFrequency: "daily" as const,
         priority: 0.7,
       },
       {
-        url: url(`/found-pets/estado/${slug}`),
+        url: url(`/found-pets/departamento/${slug}`),
         lastModified: now,
         changeFrequency: "daily" as const,
         priority: 0.7,

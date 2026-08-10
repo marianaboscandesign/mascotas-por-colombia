@@ -17,7 +17,7 @@ export type PetSize = "pequeno" | "mediano" | "grande";
 
 /** Ubicación geográfica asociada a un reporte. */
 export interface GeoLocation {
-  state: string; // Estado de Colombia
+  state: string; // Departamento de Colombia
   city: string;
   reference?: string; // Punto de referencia / sector
   lat?: number;

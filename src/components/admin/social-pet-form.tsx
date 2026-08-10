@@ -148,7 +148,7 @@ export function SocialPetForm({
         <Field label="Ciudad">
           <Input value={v.city} onChange={(e) => set("city", e.target.value)} />
         </Field>
-        <Field label="Estado">
+        <Field label="Departamento">
           <Select
             value={v.state || NONE}
             onValueChange={(val) => set("state", val === NONE ? "" : val)}

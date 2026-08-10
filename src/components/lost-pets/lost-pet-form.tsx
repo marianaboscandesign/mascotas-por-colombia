@@ -151,7 +151,7 @@ export function LostPetForm() {
       >
         <p className="bg-secondary/40 text-foreground/80 rounded-xl p-4 text-sm leading-relaxed">
           Para publicar solo necesitas <strong>una foto</strong>, la{" "}
-          <strong>especie</strong>, el <strong>estado</strong> y{" "}
+          <strong>especie</strong>, el <strong>departamento</strong> y{" "}
           <strong>un medio de contacto</strong>. Lo demás es opcional, pero cada
           dato ayuda a encontrarla más rápido.
         </p>
@@ -252,7 +252,7 @@ export function LostPetForm() {
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Selecciona el estado" />
+                        <SelectValue placeholder="Selecciona el departamento" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

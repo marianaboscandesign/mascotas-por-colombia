@@ -275,7 +275,7 @@ export function ShelterForm({
             required
           />
         </Field>
-        <Field label="Estado / Provincia" className="sm:col-span-2">
+        <Field label="Departamento" className="sm:col-span-2">
           <Input
             value={v.region}
             onChange={(e) => set("region", e.target.value)}

@@ -160,7 +160,7 @@ export function FreeVetForm({
             required
           />
         </Field>
-        <Field label="Estado">
+        <Field label="Departamento">
           <Select
             value={v.state || NONE}
             onValueChange={(val) => set("state", val === NONE ? "" : val)}

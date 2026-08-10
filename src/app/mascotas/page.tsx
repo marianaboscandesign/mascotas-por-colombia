@@ -17,14 +17,14 @@ export const metadata: Metadata = {
   alternates: { canonical: "/mascotas" },
   title: "Mascotas perdidas en Colombia | Encuentra a tu mascota",
   description:
-    "Encuentra mascotas perdidas en Colombia: busca perros y gatos extraviados por estado, especie y color, o reporta a tu mascota gratis para que vuelva a casa.",
+    "Encuentra mascotas perdidas en Colombia: busca perros y gatos extraviados por departamento, especie y color, o reporta a tu mascota gratis para que vuelva a casa.",
 };
 
 const FAQS: FaqItem[] = [
   {
     question: "¿Cómo encontrar una mascota perdida en Colombia?",
     answer:
-      "Revisa el directorio de mascotas perdidas y encontradas filtrando por estado, especie y color. Si no la ves, reporta a tu mascota perdida gratis para que más personas en tu zona puedan ayudarte a encontrarla. La plataforma busca coincidencias automáticamente con las mascotas encontradas.",
+      "Revisa el directorio de mascotas perdidas y encontradas filtrando por departamento, especie y color. Si no la ves, reporta a tu mascota perdida gratis para que más personas en tu zona puedan ayudarte a encontrarla. La plataforma busca coincidencias automáticamente con las mascotas encontradas.",
   },
   {
     question: "¿Qué hago si encontré una mascota en la calle?",
@@ -39,12 +39,12 @@ const FAQS: FaqItem[] = [
   {
     question: "¿Cómo reporto a mi mascota perdida?",
     answer:
-      "Toca 'Reportar mascota perdida', sube una foto y completa lo esencial (especie, estado y un medio de contacto). En minutos se publica su ficha pública para ayudar a encontrarla.",
+      "Toca 'Reportar mascota perdida', sube una foto y completa lo esencial (especie, departamento y un medio de contacto). En minutos se publica su ficha pública para ayudar a encontrarla.",
   },
   {
     question: "¿En qué zonas de Colombia funciona?",
     answer:
-      "En toda Colombia. Puedes filtrar por estado (Bogotá, Antioquia, Valle del Cauca, Atlántico y más) para enfocar la búsqueda en tu ciudad o región.",
+      "En toda Colombia. Puedes filtrar por departamento (Bogotá, Antioquia, Valle del Cauca, Atlántico y más) para enfocar la búsqueda en tu ciudad o región.",
   },
   {
     question: "¿Cómo aumento las posibilidades de encontrar a mi mascota?",
@@ -70,7 +70,7 @@ export default async function LostPetsPage({ searchParams }: PageProps) {
       <PageHeader
         eyebrow="Directorio"
         title="Mascotas perdidas en Colombia"
-        description="Encuentra mascotas perdidas en Colombia y ayuda a que vuelvan a casa. Estas mascotas siguen sin aparecer: si has visto alguna, contacta a su familia desde su ficha. Filtra por estado, especie o color, o reporta a tu mascota gratis."
+        description="Encuentra mascotas perdidas en Colombia y ayuda a que vuelvan a casa. Estas mascotas siguen sin aparecer: si has visto alguna, contacta a su familia desde su ficha. Filtra por departamento, especie o color, o reporta a tu mascota gratis."
       />
       <Container className="py-10 lg:py-14">
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -122,19 +122,19 @@ export default async function LostPetsPage({ searchParams }: PageProps) {
           </div>
         )}
 
-        {/* Mascotas perdidas por estado (long-tail / búsqueda local) */}
+        {/* Mascotas perdidas por departamento (long-tail / búsqueda local) */}
         <section className="mt-16" aria-labelledby="por-estado">
           <h2 id="por-estado" className="font-heading text-lg font-semibold">
-            Mascotas perdidas por estado
+            Mascotas perdidas por departamento
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            Busca mascotas perdidas en tu estado.
+            Busca mascotas perdidas en tu departamento.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {COLOMBIA_DEPARTMENTS.map((s) => (
               <Link
                 key={s}
-                href={`/mascotas/estado/${stateToSlug(s)}`}
+                href={`/mascotas/departamento/${stateToSlug(s)}`}
                 className={cn(
                   "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
                   "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground",

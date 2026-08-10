@@ -99,13 +99,13 @@ export function GlobalSearch({ initial }: { initial: GlobalSearchInitial }) {
       {/* Filtros estructurados */}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label htmlFor="search-state">Estado</Label>
+          <Label htmlFor="search-state">Departamento</Label>
           <Select value={state} onValueChange={setState}>
             <SelectTrigger id="search-state">
               <SelectValue placeholder="Todos" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={ALL}>Todos los estados</SelectItem>
+              <SelectItem value={ALL}>Todos los departamentos</SelectItem>
               {COLOMBIA_DEPARTMENTS.map((s) => (
                 <SelectItem key={s} value={s}>
                   {s}

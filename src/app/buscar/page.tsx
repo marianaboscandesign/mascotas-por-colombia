@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/buscar" },
   title: "Buscar mascotas",
   description:
-    "Buscador global: encuentra mascotas perdidas, encontradas y rescatadas por nombre, ciudad, estado, especie, color o raza.",
+    "Buscador global: encuentra mascotas perdidas, encontradas y rescatadas por nombre, ciudad, departamento, especie, color o raza.",
 };
 
 interface PageProps {
