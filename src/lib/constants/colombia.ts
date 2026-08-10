@@ -47,7 +47,7 @@ export function stateToSlug(state: ColombiaDepartmentEnum): string {
   return slugify(state);
 }
 
-/** Mapa slug → departamento, para resolver rutas /mascotas/estado/[estado]. */
+/** Mapa slug → departamento, para resolver rutas /mascotas/departamento/[estado]. */
 const SLUG_TO_STATE: Record<string, ColombiaDepartmentEnum> = Object.fromEntries(
   COLOMBIA_DEPARTMENTS.map((s) => [slugify(s), s]),
 );

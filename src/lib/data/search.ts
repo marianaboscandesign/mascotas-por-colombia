@@ -41,7 +41,7 @@ function sanitize(term: string): string {
 
 /**
  * Búsqueda global sobre la vista unificada `searchable_pets`.
- * Texto libre (nombre, ciudad, color, raza) + filtros de estado, especie y tipo.
+ * Texto libre (nombre, ciudad, color, raza) + filtros de departamento, especie y tipo.
  */
 export async function searchPets(
   params: SearchPetsParams,

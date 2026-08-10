@@ -22,7 +22,7 @@ export const lostPetFieldsSchema = z
     color: optionalText(80),
     description: optionalText(4000),
     state: z.enum(COLOMBIA_DEPARTMENT_VALUES, {
-      required_error: "Selecciona el estado",
+      required_error: "Selecciona el departamento",
     }),
     city: optionalText(120),
     lastSeenLocation: optionalText(200),

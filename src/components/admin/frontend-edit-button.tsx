@@ -407,7 +407,7 @@ export function FrontendEditButton({ id, kind, initialData }: EditButtonProps) {
                 <h4 className="font-heading text-sm font-semibold text-primary border-b pb-1">2. Ubicación y Fecha</h4>
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">
-                    <label className="text-xs font-medium" htmlFor="edit-state">Estado</label>
+                    <label className="text-xs font-medium" htmlFor="edit-state">Departamento</label>
                     <select
                       id="edit-state"
                       value={values.state}

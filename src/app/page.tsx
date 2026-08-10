@@ -61,13 +61,13 @@ const valores = [
     icon: Search,
     title: "Busca y encuentra",
     description:
-      "Explora reportes de mascotas perdidas y encontradas con filtros claros por zona, especie y estado.",
+      "Explora reportes de mascotas perdidas y encontradas con filtros claros por zona, especie y departamento.",
   },
   {
     icon: MapPin,
     title: "Cerca de ti",
     description:
-      "Organizamos la información por estado y sector para que la búsqueda sea rápida y local.",
+      "Organizamos la información por departamento y sector para que la búsqueda sea rápida y local.",
   },
   {
     icon: ShieldCheck,
@@ -411,7 +411,7 @@ export default async function HomePage() {
               Busca a tu mascota entre los reportes
             </h2>
             <p className="text-muted-foreground mt-3 text-pretty">
-              Filtra por especie, estado o describe a tu mascota (color, raza,
+              Filtra por especie, departamento o describe a tu mascota (color, raza,
               nombre) y revisa si ya está publicada entre las perdidas y
               encontradas.
             </p>

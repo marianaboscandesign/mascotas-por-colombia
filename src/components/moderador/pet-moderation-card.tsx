@@ -283,7 +283,7 @@ function EditDialog({
               onChange={(e) => set("city", e.target.value)}
             />
           </FieldEl>
-          <FieldEl label="Estado (región)">
+          <FieldEl label="Departamento">
             <select
               value={v.state ?? ""}
               onChange={(e) => set("state", e.target.value)}

@@ -113,22 +113,22 @@ export default async function FoundPetsPage({ searchParams }: PageProps) {
           <EmptyState hasFilters={hasFilters} />
         )}
 
-        {/* Mascotas encontradas por estado (long-tail / búsqueda local) */}
+        {/* Mascotas encontradas por departamento (long-tail / búsqueda local) */}
         <section className="mt-16" aria-labelledby="encontradas-por-estado">
           <h2
             id="encontradas-por-estado"
             className="font-heading text-lg font-semibold"
           >
-            Mascotas encontradas por estado
+            Mascotas encontradas por departamento
           </h2>
           <p className="text-muted-foreground mt-1 text-sm">
-            Revisa las mascotas encontradas en tu estado.
+            Revisa las mascotas encontradas en tu departamento.
           </p>
           <div className="mt-4 flex flex-wrap gap-2">
             {COLOMBIA_DEPARTMENTS.map((s) => (
               <Link
                 key={s}
-                href={`/found-pets/estado/${stateToSlug(s)}`}
+                href={`/found-pets/departamento/${stateToSlug(s)}`}
                 className={cn(
                   "rounded-full border px-3.5 py-1.5 text-sm font-medium transition-colors",
                   "border-border bg-background text-muted-foreground hover:border-primary/50 hover:text-foreground",
