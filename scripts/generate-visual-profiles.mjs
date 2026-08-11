@@ -56,8 +56,25 @@ const GOOGLE_CLOUD_PROJECT = env.GOOGLE_CLOUD_PROJECT;
 const GOOGLE_CLOUD_LOCATION = env.GOOGLE_CLOUD_LOCATION;
 // Los scripts de Node no cargan .env.local automáticamente. Google Auth sí
 // lee esta variable desde process.env para obtener las credenciales de Vertex.
-if (env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
-  process.env.GOOGLE_APPLICATION_CREDENTIALS = env.GOOGLE_APPLICATION_CREDENTIALS;
+let googleAuthOptions;
+if (env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+  try {
+    const credentials = JSON.parse(env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+    if (
+      credentials.type !== "service_account" ||
+      !credentials.client_email ||
+      !credentials.private_key
+    ) {
+      throw new Error("formato de cuenta de servicio no válido");
+    }
+    googleAuthOptions = { credentials };
+  } catch (error) {
+    console.error(
+      "GOOGLE_APPLICATION_CREDENTIALS_JSON no es válido:",
+      error instanceof Error ? error.message : "JSON inválido",
+    );
+    process.exit(1);
+  }
 }
 if (!SUPABASE_URL || !SERVICE_KEY || !GOOGLE_CLOUD_PROJECT || !GOOGLE_CLOUD_LOCATION) {
   console.error(
@@ -73,6 +90,7 @@ const ai = new GoogleGenAI({
   vertexai: true,
   project: GOOGLE_CLOUD_PROJECT,
   location: GOOGLE_CLOUD_LOCATION,
+  googleAuthOptions,
 });
 
 // ── Esquema y prompt (en sincronía con visual-profile-schema.ts) ──
