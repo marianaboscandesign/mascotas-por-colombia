@@ -3,6 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import {
+  ArrowLeftRight,
   Eye,
   EyeOff,
   HeartHandshake,
@@ -17,6 +18,7 @@ import {
 import {
   deletePublication,
   markReunited,
+  reclassifyPublication,
   setApproval,
   setFeatured,
   setStatus,
@@ -70,6 +72,19 @@ export function PublicationRow({ pub }: { pub: AdminPublication }) {
   const editHref = `/admin/publicaciones/${pub.kind}/${pub.id}`;
 
   const run = (fn: () => Promise<unknown>) => start(() => void fn());
+
+  // Reclasificar: mover el reporte a la otra sección (perdida ⇄ encontrada)
+  // cuando se publicó en la equivocada. Cambia la URL, por eso pedimos confirmar.
+  const otherLabel = pub.kind === "perdida" ? "Encontrada" : "Perdida";
+  function reclassify() {
+    if (
+      window.confirm(
+        `¿Mover esta mascota a la sección de ${otherLabel}?\n\nSe reclasifica el reporte: pasará a mostrarse (y a publicarse en Instagram) como "${otherLabel}".`,
+      )
+    ) {
+      run(() => reclassifyPublication(pub.kind, pub.id));
+    }
+  }
 
   // Publicación en Instagram (semiautomática: el admin confirma cada post).
   const [ig, setIg] = React.useState<{
@@ -144,6 +159,15 @@ export function PublicationRow({ pub }: { pub: AdminPublication }) {
           </div>
 
           <div className="mt-3 flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={pending}
+              onClick={reclassify}
+            >
+              <ArrowLeftRight className="size-4" />
+              Es {pub.kind === "perdida" ? "encontrada" : "perdida"}
+            </Button>
             <Button
               variant="outline"
               size="sm"
