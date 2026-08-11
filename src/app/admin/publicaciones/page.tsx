@@ -34,7 +34,11 @@ export default async function AdminPublicationsPage({
 
   let items = all;
   if (tipo === "perdida" || tipo === "encontrada") {
-    items = items.filter((p) => p.kind === tipo);
+    // Una perdida cuyo estado ya es "encontrada" cuenta como encontrada para
+    // filtrar (aparece en "Encontradas", no en "Perdidas").
+    const shownKind = (p: (typeof all)[number]) =>
+      p.kind === "perdida" && p.status === "encontrada" ? "encontrada" : p.kind;
+    items = items.filter((p) => shownKind(p) === tipo);
   }
   if (estado === "ocultas") {
     items = items.filter((p) => !p.isApproved);

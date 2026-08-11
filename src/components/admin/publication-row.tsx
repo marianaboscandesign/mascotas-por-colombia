@@ -59,6 +59,12 @@ export function PublicationRow({ pub }: { pub: AdminPublication }) {
   const [pending, start] = React.useTransition();
   const title =
     pub.name ?? (pub.kind === "perdida" ? "Sin nombre" : "Sin nombre");
+  // Tipo a MOSTRAR: una perdida cuyo estado ya es "encontrada" (apareció) se
+  // muestra como Encontrada. Las acciones siguen usando pub.kind (la tabla real).
+  const displayKind =
+    pub.kind === "perdida" && pub.status === "encontrada"
+      ? "encontrada"
+      : pub.kind;
   const detailHref =
     pub.kind === "perdida" ? `/mascotas/${pub.id}` : `/found-pets/${pub.id}`;
   const editHref = `/admin/publicaciones/${pub.kind}/${pub.id}`;
@@ -105,8 +111,8 @@ export function PublicationRow({ pub }: { pub: AdminPublication }) {
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="font-heading truncate font-semibold">{title}</h3>
-            <Badge variant={pub.kind === "perdida" ? "warm" : "default"}>
-              {pub.kind === "perdida" ? "Perdida" : "Encontrada"}
+            <Badge variant={displayKind === "perdida" ? "warm" : "default"}>
+              {displayKind === "perdida" ? "Perdida" : "Encontrada"}
             </Badge>
             {!pub.isApproved && <Badge variant="warning">Oculta</Badge>}
             {pub.isFeatured && <Badge variant="warning">Urgente</Badge>}
