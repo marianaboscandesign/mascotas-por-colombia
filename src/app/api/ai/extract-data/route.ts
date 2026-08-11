@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import {
   createVertexAiClient,
   isVertexAiConfigured,
-  VERTEX_MODEL,
+  VERTEX_AUTOFILL_MODEL,
 } from "@/lib/ai/vertex";
 
 function isRateLimitError(error: unknown) {
@@ -13,6 +13,24 @@ function isRateLimitError(error: unknown) {
 
   const message = error instanceof Error ? error.message.toLowerCase() : String(error).toLowerCase();
   return message.includes("429") || /quota|rate limit|exhausted/.test(message);
+}
+
+function keepFirstPhoneNumber(data: unknown) {
+  if (!data || typeof data !== "object" || Array.isArray(data)) return data;
+
+  const result = { ...(data as Record<string, unknown>) };
+  const phoneFields = ["reporterPhone", "contactPhone", "phone", "whatsapp"];
+  const colombianPhone = /(?:\+?57[\s().-]*)?(3\d{2}(?:[\s().-]*\d{3}){2})/;
+
+  for (const field of phoneFields) {
+    const value = result[field];
+    if (typeof value !== "string") continue;
+
+    const firstPhone = value.match(colombianPhone)?.[0];
+    if (firstPhone) result[field] = firstPhone.trim();
+  }
+
+  return result;
 }
 
 export async function POST(req: Request) {
@@ -137,7 +155,7 @@ export async function POST(req: Request) {
 
     const ai = createVertexAiClient();
     const response = await ai.models.generateContent({
-      model: VERTEX_MODEL,
+      model: VERTEX_AUTOFILL_MODEL,
       contents: [{ role: "user", parts }],
       config: {
         responseMimeType: "application/json",
@@ -150,7 +168,7 @@ export async function POST(req: Request) {
       throw new Error("No se obtuvo respuesta de Vertex AI.");
     }
 
-    const data = JSON.parse(responseText);
+    const data = keepFirstPhoneNumber(JSON.parse(responseText));
     const returnedImages = imagesToProcess.map(img => `data:${img.mimeType};base64,${img.data}`);
     return NextResponse.json({ data, images: returnedImages });
   } catch (error: unknown) {
@@ -178,7 +196,8 @@ Tu tarea es analizar el contenido proporcionado y devolver un objeto JSON estric
 
 INSTRUCCIÓN CRÍTICA SOBRE TELÉFONOS DE CONTACTO:
 Presta especial atención a extraer los números de teléfono celular/móvil (que en Colombia tienen 10 dígitos y suelen empezar con 3, por ejemplo 300, 301, 310, 311, 312, 320, 350, o con el código de país +57).
-Extráelos con prioridad absoluta de la imagen o del texto. Es muy común que aparezcan al lado de un logo o icono de WhatsApp, de un icono de llamada, o al final de la publicación. Extrae el número completo tal como aparezca.`;
+Extráelos con prioridad absoluta de la imagen o del texto. Es muy común que aparezcan al lado de un logo o icono de WhatsApp, de un icono de llamada, o al final de la publicación. Extrae el número completo tal como aparezca.
+Si aparecen varios teléfonos, devuelve ÚNICAMENTE el primer número de teléfono que encuentres, en el orden en que aparece. Nunca unas, concatenes ni separes varios números dentro del mismo campo.`;
 
   switch (entityType) {
     case "lost-pet":

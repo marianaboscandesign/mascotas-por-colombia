@@ -2,7 +2,11 @@ import "server-only";
 
 import { GoogleGenAI } from "@google/genai";
 
-export const VERTEX_MODEL = "gemini-2.5-flash";
+/** Mejor razonamiento visual para extraer datos de anuncios y capturas. */
+export const VERTEX_AUTOFILL_MODEL = "gemini-2.5-pro";
+
+/** Respuesta rápida para búsqueda por foto y fichas visuales en segundo plano. */
+export const VERTEX_IMAGE_MODEL = "gemini-2.5-flash";
 
 export function isVertexAiConfigured() {
   return Boolean(
