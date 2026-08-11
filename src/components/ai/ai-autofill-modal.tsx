@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Sparkles, Loader2, Upload, AlertCircle, CheckCircle2 } from "lucide-react";
 
 import {
@@ -52,7 +52,7 @@ export function AiAutofillModal({
     onOpenChange(open);
   };
 
-  const handlePaste = useCallback((e: React.ClipboardEvent) => {
+  const handlePaste = useCallback((e: React.ClipboardEvent | ClipboardEvent) => {
     const items = e.clipboardData?.items;
     if (!items) return;
 
@@ -69,11 +69,21 @@ export function AiAutofillModal({
             }
           };
           reader.readAsDataURL(file);
-          e.preventDefault(); // Stop text paste if it's an image
+          e.preventDefault();
+          return;
         }
       }
     }
   }, []);
+
+  // El foco inicial del diálogo no siempre cae en el textarea. Escuchar en el
+  // documento permite pegar una captura con Ctrl+V desde cualquier parte del modal.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    document.addEventListener("paste", handlePaste);
+    return () => document.removeEventListener("paste", handlePaste);
+  }, [isOpen, handlePaste]);
 
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault();
@@ -224,6 +234,8 @@ export function AiAutofillModal({
             className="border-2 border-dashed border-border rounded-xl p-6 flex flex-col items-center justify-center text-center focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 transition-colors hover:border-primary/50 relative overflow-hidden group"
             onDragOver={(e) => e.preventDefault()}
             onDrop={handleFileDrop}
+            onPaste={handlePaste}
+            tabIndex={0}
           >
             {imagePreview ? (
               <div className="w-full relative rounded-lg overflow-hidden flex justify-center items-center h-48 bg-black/5">
@@ -267,7 +279,6 @@ export function AiAutofillModal({
               placeholder="...O si prefieres, pega un enlace de X (Twitter) o el texto de la publicación aquí."
               value={text}
               onChange={(e) => setText(e.target.value)}
-              onPaste={handlePaste}
               className="min-h-[120px] resize-y"
               disabled={loading}
             />
@@ -300,7 +311,7 @@ export function AiAutofillModal({
             {loading ? (
               <>
                 <Loader2 className="mr-2 size-4 animate-spin" />
-                Analizando con Gemini...
+                Analizando con IA...
               </>
             ) : (
               <>
