@@ -3,6 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import { env, serverEnv } from "@/lib/env";
 import { generateProfileFromImage } from "@/lib/ai/photo-search";
+import { isVertexAiConfigured } from "@/lib/ai/vertex";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -28,7 +29,7 @@ function clientIp(req: Request): string {
 
 export async function POST(req: Request) {
   try {
-    if (!process.env.GEMINI_API_KEY || !serverEnv.supabaseServiceRoleKey) {
+    if (!isVertexAiConfigured() || !serverEnv.supabaseServiceRoleKey) {
       return NextResponse.json(
         { error: "El buscador por foto no está disponible ahora mismo." },
         { status: 503 },

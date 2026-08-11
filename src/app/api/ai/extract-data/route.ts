@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
-import { GoogleGenAI } from "@google/genai";
+import {
+  createVertexAiClient,
+  isVertexAiConfigured,
+  VERTEX_MODEL,
+} from "@/lib/ai/vertex";
 
 function isRateLimitError(error: unknown) {
   if (typeof error === "object" && error !== null) {
@@ -13,15 +17,9 @@ function isRateLimitError(error: unknown) {
 
 export async function POST(req: Request) {
   try {
-    const apiKeys = [
-      process.env.GEMINI_API_KEY,
-      process.env.GEMINI_API_KEY_FALLBACK_1,
-      process.env.GEMINI_API_KEY_FALLBACK_2,
-    ].filter((apiKey): apiKey is string => Boolean(apiKey));
-
-    if (apiKeys.length === 0) {
+    if (!isVertexAiConfigured()) {
       return NextResponse.json(
-        { error: "API Key de Gemini no configurada." },
+        { error: "Vertex AI no está configurado." },
         { status: 500 },
       );
     }
@@ -137,34 +135,19 @@ export async function POST(req: Request) {
       }
     }
 
-    let responseText: string | undefined;
-    let lastRateLimitError: unknown;
-
-    for (const apiKey of apiKeys) {
-      try {
-        const ai = new GoogleGenAI({ apiKey });
-        const response = await ai.models.generateContent({
-          model: "gemini-flash-latest",
-          contents: [{ role: "user", parts }],
-          config: {
-            responseMimeType: "application/json",
-            temperature: 0.2,
-          },
-        });
-        responseText = response.text;
-        if (responseText) break;
-        throw new Error("No se obtuvo respuesta de Gemini.");
-      } catch (error) {
-        if (!isRateLimitError(error)) throw error;
-        lastRateLimitError = error;
-      }
-    }
+    const ai = createVertexAiClient();
+    const response = await ai.models.generateContent({
+      model: VERTEX_MODEL,
+      contents: [{ role: "user", parts }],
+      config: {
+        responseMimeType: "application/json",
+        temperature: 0.2,
+      },
+    });
+    const responseText = response.text;
 
     if (!responseText) {
-      // Si todas las llaves fallaron por límite de cuota, propaga ese error
-      // para que se devuelva RATE_LIMIT en vez de un 500 genérico.
-      if (lastRateLimitError) throw lastRateLimitError;
-      throw new Error("No se obtuvo respuesta de Gemini.");
+      throw new Error("No se obtuvo respuesta de Vertex AI.");
     }
 
     const data = JSON.parse(responseText);

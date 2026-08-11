@@ -1,11 +1,15 @@
 import "server-only";
 
-import { GoogleGenAI } from "@google/genai";
 import { createClient } from "@supabase/supabase-js";
 
 import { env, serverEnv } from "@/lib/env";
 import { petPhotoUrl } from "@/lib/storage/pet-photos";
 import { computeAndStoreMatches } from "@/lib/ai/pet-matches";
+import {
+  createVertexAiClient,
+  isVertexAiConfigured,
+  VERTEX_MODEL,
+} from "@/lib/ai/vertex";
 import {
   VISUAL_PROFILE_PROMPT,
   VISUAL_PROFILE_RESPONSE_SCHEMA,
@@ -45,9 +49,8 @@ export async function generateVisualProfile(
   photos: string[] | null | undefined,
 ): Promise<void> {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
     const mainPhoto = photos?.[0];
-    if (!apiKey || !mainPhoto || !serverEnv.supabaseServiceRoleKey) return;
+    if (!isVertexAiConfigured() || !mainPhoto || !serverEnv.supabaseServiceRoleKey) return;
 
     const supabase = serviceClient();
     const table = tableFor(kind);
@@ -77,9 +80,9 @@ export async function generateVisualProfile(
     const base64 = Buffer.from(await res.arrayBuffer()).toString("base64");
 
     // Una sola llamada a Gemini con salida estructurada.
-    const ai = new GoogleGenAI({ apiKey });
+    const ai = createVertexAiClient();
     const response = await ai.models.generateContent({
-      model: "gemini-flash-latest",
+      model: VERTEX_MODEL,
       contents: [
         {
           role: "user",

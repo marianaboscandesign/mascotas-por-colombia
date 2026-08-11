@@ -1,6 +1,10 @@
 import "server-only";
 
-import { GoogleGenAI } from "@google/genai";
+import {
+  createVertexAiClient,
+  isVertexAiConfigured,
+  VERTEX_MODEL,
+} from "@/lib/ai/vertex";
 
 import {
   VISUAL_PROFILE_PROMPT,
@@ -17,12 +21,11 @@ export async function generateProfileFromImage(
   base64: string,
   mimeType: string,
 ): Promise<VisualProfile | null> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return null;
+  if (!isVertexAiConfigured()) return null;
 
-  const ai = new GoogleGenAI({ apiKey });
+  const ai = createVertexAiClient();
   const response = await ai.models.generateContent({
-    model: "gemini-flash-latest",
+    model: VERTEX_MODEL,
     contents: [
       {
         role: "user",
