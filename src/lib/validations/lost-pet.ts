@@ -27,11 +27,7 @@ export const lostPetFieldsSchema = z
     city: optionalText(120),
     lastSeenLocation: optionalText(200),
     lastSeenDate: optionalPastDate,
-    reporterName: z
-      .string({ required_error: "Escribe el nombre del dueño" })
-      .trim()
-      .min(1, "Escribe el nombre del dueño")
-      .max(120, "Máximo 120 caracteres"),
+    reporterName: optionalText(120),
     reporterPhone: optionalPhone("Teléfono / WhatsApp"),
     reporterEmail: optionalEmail,
   })

@@ -247,7 +247,7 @@ export function LostPetForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Estado <span className="text-destructive">*</span>
+                    Departamento <span className="text-destructive">*</span>
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
@@ -304,7 +304,7 @@ export function LostPetForm() {
         {/* ── Contacto ── */}
         <FieldGroup
           title="¿Cómo te contactamos?"
-          description="Tu nombre y un medio de contacto para que puedan escribirte."
+          description="Un medio de contacto (teléfono, WhatsApp o correo) para que puedan escribirte. El nombre es opcional."
         >
           <div className="grid gap-5 sm:grid-cols-2">
             <FormField
@@ -313,7 +313,7 @@ export function LostPetForm() {
               render={({ field }) => (
                 <FormItem className="sm:col-span-2">
                   <FormLabel>
-                    Nombre del dueño <span className="text-destructive">*</span>
+                    Nombre del dueño (opcional)
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="Nombre y apellido" {...field} />

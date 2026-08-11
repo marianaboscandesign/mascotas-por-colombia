@@ -292,7 +292,7 @@ export function FoundPetForm() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Estado <span className="text-destructive">*</span>
+                    Departamento <span className="text-destructive">*</span>
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>

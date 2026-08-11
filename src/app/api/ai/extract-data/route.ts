@@ -161,6 +161,9 @@ export async function POST(req: Request) {
     }
 
     if (!responseText) {
+      // Si todas las llaves fallaron por límite de cuota, propaga ese error
+      // para que se devuelva RATE_LIMIT en vez de un 500 genérico.
+      if (lastRateLimitError) throw lastRateLimitError;
       throw new Error("No se obtuvo respuesta de Gemini.");
     }
 
