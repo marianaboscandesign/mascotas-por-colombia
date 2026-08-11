@@ -3,7 +3,7 @@ import "server-only";
 import {
   createVertexAiClient,
   isVertexAiConfigured,
-  VERTEX_MODEL,
+  VERTEX_IMAGE_MODEL,
 } from "@/lib/ai/vertex";
 
 import {
@@ -25,7 +25,7 @@ export async function generateProfileFromImage(
 
   const ai = createVertexAiClient();
   const response = await ai.models.generateContent({
-    model: VERTEX_MODEL,
+    model: VERTEX_IMAGE_MODEL,
     contents: [
       {
         role: "user",

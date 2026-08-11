@@ -8,7 +8,7 @@ import { computeAndStoreMatches } from "@/lib/ai/pet-matches";
 import {
   createVertexAiClient,
   isVertexAiConfigured,
-  VERTEX_MODEL,
+  VERTEX_IMAGE_MODEL,
 } from "@/lib/ai/vertex";
 import {
   VISUAL_PROFILE_PROMPT,
@@ -82,7 +82,7 @@ export async function generateVisualProfile(
     // Una sola llamada a Gemini con salida estructurada.
     const ai = createVertexAiClient();
     const response = await ai.models.generateContent({
-      model: VERTEX_MODEL,
+      model: VERTEX_IMAGE_MODEL,
       contents: [
         {
           role: "user",
