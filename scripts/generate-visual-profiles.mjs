@@ -52,10 +52,16 @@ function loadEnv() {
 const env = loadEnv();
 const SUPABASE_URL = env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_KEY = env.SUPABASE_SERVICE_ROLE_KEY;
-const GEMINI_KEY = env.GEMINI_API_KEY;
-if (!SUPABASE_URL || !SERVICE_KEY || !GEMINI_KEY) {
+const GOOGLE_CLOUD_PROJECT = env.GOOGLE_CLOUD_PROJECT;
+const GOOGLE_CLOUD_LOCATION = env.GOOGLE_CLOUD_LOCATION;
+// Los scripts de Node no cargan .env.local automáticamente. Google Auth sí
+// lee esta variable desde process.env para obtener las credenciales de Vertex.
+if (env.GOOGLE_APPLICATION_CREDENTIALS && !process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = env.GOOGLE_APPLICATION_CREDENTIALS;
+}
+if (!SUPABASE_URL || !SERVICE_KEY || !GOOGLE_CLOUD_PROJECT || !GOOGLE_CLOUD_LOCATION) {
   console.error(
-    "Faltan NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY o GEMINI_API_KEY en .env.local",
+    "Faltan credenciales de Supabase o la configuración de Vertex AI en .env.local",
   );
   process.exit(1);
 }
@@ -63,7 +69,11 @@ if (!SUPABASE_URL || !SERVICE_KEY || !GEMINI_KEY) {
 const supabase = createClient(SUPABASE_URL, SERVICE_KEY, {
   auth: { persistSession: false },
 });
-const ai = new GoogleGenAI({ apiKey: GEMINI_KEY });
+const ai = new GoogleGenAI({
+  vertexai: true,
+  project: GOOGLE_CLOUD_PROJECT,
+  location: GOOGLE_CLOUD_LOCATION,
+});
 
 // ── Esquema y prompt (en sincronía con visual-profile-schema.ts) ──
 const COLOR = [
