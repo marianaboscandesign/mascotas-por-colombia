@@ -245,6 +245,54 @@ type FoundPetInsert = {
   is_imported?: boolean;
 };
 
+type ExternalPetReportRow = {
+  id: string;
+  source: string;
+  source_key: string;
+  source_url: string;
+  report_kind: "perdida" | "encontrada";
+  species: PetSpeciesEnum;
+  name: string | null;
+  description: string;
+  city: string | null;
+  sector: string | null;
+  source_photo_url: string | null;
+  source_contact_url: string | null;
+  source_published_label: string | null;
+  raw_payload: Json;
+  review_status:
+    | "pendiente"
+    | "publicada"
+    | "duplicada"
+    | "descartada"
+    | "requiere_datos";
+  published_pet_kind: "perdida" | "encontrada" | null;
+  published_pet_id: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+type ExternalPetReportInsert = Omit<
+  ExternalPetReportRow,
+  "id" | "created_at" | "updated_at" | "review_status"
+> & {
+  review_status?: ExternalPetReportRow["review_status"];
+};
+
+type ExternalPetCandidateRow = {
+  id: string;
+  external_report_id: string;
+  pet_kind: "perdida" | "encontrada";
+  pet_id: string;
+  score: number;
+  reasons: string[];
+  created_at: string;
+};
+
+type ExternalPetCandidateInsert = Omit<ExternalPetCandidateRow, "id" | "created_at">;
+
 type RescuedPetRow = {
   id: string;
   shelter_id: string;
@@ -672,6 +720,18 @@ export interface Database {
         Row: FoundPetRow;
         Insert: FoundPetInsert;
         Update: Partial<FoundPetInsert>;
+        Relationships: [];
+      };
+      external_pet_reports: {
+        Row: ExternalPetReportRow;
+        Insert: ExternalPetReportInsert;
+        Update: Partial<ExternalPetReportInsert>;
+        Relationships: [];
+      };
+      external_pet_candidates: {
+        Row: ExternalPetCandidateRow;
+        Insert: ExternalPetCandidateInsert;
+        Update: Partial<ExternalPetCandidateInsert>;
         Relationships: [];
       };
       rescued_pets: {

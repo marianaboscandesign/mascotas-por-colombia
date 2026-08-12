@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Clapperboard,
+  FileSearch,
   HandHeart,
   LayoutDashboard,
   LogOut,
@@ -33,6 +34,7 @@ interface NavItem {
 const NAV: NavItem[] = [
   { href: "/admin", label: "Panel", icon: LayoutDashboard },
   { href: "/admin/publicaciones", label: "Publicaciones", icon: Megaphone },
+  { href: "/admin/importaciones", label: "Importaciones", icon: FileSearch },
   { href: "/admin/refugios", label: "Centros de acopio", icon: Warehouse },
   { href: "/admin/veterinarios", label: "Veterinarios", icon: Stethoscope },
   {
