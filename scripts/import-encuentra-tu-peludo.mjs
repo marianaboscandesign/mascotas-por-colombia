@@ -59,6 +59,14 @@ const paragraphTexts = (html) => [...html.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi
 const phoneFromUrl = (url) => url?.match(/wa\.me\/([^?/#]+)/i)?.[1].replace(/\D/g, "") ?? null;
 const words = (value) => new Set(normalize(value).split(" ").filter((word) => word.length >= 4));
 
+/** Convierte la URL del optimizador Next de la fuente en la foto original. */
+function sourcePhotoUrl(raw) {
+  if (!raw) return null;
+  const resolved = new URL(decode(raw), SOURCE_URL);
+  const original = resolved.searchParams.get("url");
+  return original && /^https?:\/\//.test(original) ? original : resolved.href;
+}
+
 function inferName(description) {
   const match = description.match(/(?:se llama|su nombre es|responde al nombre(?: de)?)\s+([a-záéíóúñ0-9]{2,30})/i);
   return match?.[1] ? match[1][0].toUpperCase() + match[1].slice(1).toLowerCase() : null;
@@ -69,7 +77,8 @@ function parseReports(html) {
   const seen = new Set();
   return articles.map((m) => {
     const article = m[1];
-    const image = attr(article, "src") ?? attr(article, "data-nimg");
+    const rawImage = attr(article, "src") ?? attr(article, "data-nimg");
+    const image = sourcePhotoUrl(rawImage);
     const whatsapp = article.match(/href="(https:\/\/wa\.me\/[^"]+)"/i)?.[1]?.replace(/&amp;/g, "&") ?? null;
     const paragraphs = paragraphTexts(article);
     const plain = decode(article);
@@ -81,7 +90,9 @@ function parseReports(html) {
     const description = cityIndex >= 0 ? paragraphs[cityIndex + 1] ?? "" : paragraphs.at(-2) ?? "";
     const publishedLabel = paragraphs.at(-1) ?? null;
     if (!species || description.length < 5 || !whatsapp) return null;
-    const sourceKey = createHash("sha256").update([image, species, city, description, phoneFromUrl(whatsapp)].join("|")).digest("hex");
+    // La huella usa la URL publicada tal como viene en el HTML. Así se mantiene
+    // compatible con los avisos que se importaron antes de normalizar la foto.
+    const sourceKey = createHash("sha256").update([rawImage, species, city, description, phoneFromUrl(whatsapp)].join("|")).digest("hex");
     if (seen.has(sourceKey)) return null;
     seen.add(sourceKey);
     return { sourceKey, species, reportKind, city, sector, description, publishedLabel, image, whatsapp, name: inferName(description) };
@@ -135,7 +146,7 @@ async function publishNew(report, externalId) {
   const common = {
     name: report.name,
     species: report.species,
-    description: `${report.description}\n\nFuente: ${SOURCE_URL}`.slice(0, 4000),
+    description: report.description.slice(0, 4000),
     photos: report.image ? [report.image] : [],
     state,
     city: report.city,

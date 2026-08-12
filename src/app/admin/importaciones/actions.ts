@@ -56,7 +56,7 @@ export async function resolveExternalImport(
   const common = {
     name: report.name,
     species: report.species,
-    description: `${report.description}\n\nFuente: ${report.source_url}`.slice(0, 4000),
+    description: report.description.slice(0, 4000),
     photos: report.source_photo_url ? [report.source_photo_url] : [],
     state, city: report.city, sector: report.sector,
     is_imported: true, is_approved: true,
